@@ -1,11 +1,15 @@
 #!/usr/bin/python3
-"""send a post request to a url, show response after"""
-
-import urllib.request
+"""
+Take in a URL and email, send POST request, and display body of response
+decoded in utf-8
+"""
 import sys
+from urllib import request, parse
 
-
-if __name__ == '__main__':
-    with urllib.request.urlopen(sys.argv[1],
-                                b'email=' + sys.argv[2].encode()) as req:
-                                    print(req.read().decode('UTF-8'))
+if __name__ == "__main__":
+    values = {'email': sys.argv[2]}
+    data = parse.urlencode(values)
+    data = data.encode('utf-8')
+    req = request.Request(sys.argv[1], data)
+    with request.urlopen(req) as res:
+        print(res.read().decode('utf-8'))
